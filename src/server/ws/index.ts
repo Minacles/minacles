@@ -1,4 +1,5 @@
 import { WebSocketServer } from "ws";
+import { logger } from "@/lib/logger";
 
 export const createWebSocketServer = (options: {
   port: number;
@@ -8,17 +9,17 @@ export const createWebSocketServer = (options: {
   const wss = new WebSocketServer({ port, host, path: "/ws" });
 
   wss.on("connection", (ws, request) => {
-    console.log(request);
-    console.log("New client connected");
+    logger.info(request);
+    logger.info("New client connected");
 
     ws.on("message", (message) => {
-      console.log(`Received: ${message}`);
+      logger.info(`Received: ${message}`);
     });
 
     ws.on("close", () => {
-      console.log("Client disconnected");
+      logger.info("Client disconnected");
     });
   });
 
-  console.log(`> WebSocket server is running on ws://${host}:${port}/ws`);
+  logger.info(`> WebSocket server is running on ws://${host}:${port}/ws`);
 };
