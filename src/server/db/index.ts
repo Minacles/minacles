@@ -1,3 +1,4 @@
 import { drizzle } from "drizzle-orm/libsql";
+import { config } from "@/lib/config";
 
-export const db = drizzle(process.env.DATABASE_FILE!);
+export const db = drizzle(config("database.file")!);
