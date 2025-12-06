@@ -1,10 +1,8 @@
-import { loadConfig } from "./lib/config";
+import "@/lib/config";
 import { migrateDatabase } from "./server/db/migration";
 import { createWebSocketServer } from "./server/ws";
 
 export const register = async () => {
-  await loadConfig();
-
   if (process.env.NEXT_RUNTIME === "nodejs") {
     await migrateDatabase();
 

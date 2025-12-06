@@ -1,10 +1,11 @@
-import { readFile } from "node:fs/promises";
+import { readFileSync } from "node:fs";
 import { get } from "lodash-es";
 import { parse } from "smol-toml";
 import { z } from "zod";
 import { type DotNotation, getObjectSchemaDefaults } from "./utils";
 
 const appConfig = z.object({
+  name: z.string().default("Minacles"),
   url: z.string().default("http://localhost:3000"),
   secretKey: z.string(),
 });
@@ -12,8 +13,8 @@ const appConfig = z.object({
 const databaseConfig = z.object({
   file: z
     .string()
-    .default("stores.db")
-    .transform((val) => `file:${val}`),
+    .transform((val) => `file:${val}`)
+    .default("file:stores.db"),
 });
 
 const configSchema = z.object({
@@ -24,19 +25,17 @@ const configSchema = z.object({
 export type Config = z.infer<typeof configSchema>;
 
 // State
-let parsedConfig: Partial<Config> = {};
-
-// Methods
-export const loadConfig = async () => {
-  const text = await readFile(
-    process.env.CONFIG_FILE ?? "config.toml",
-    "utf-8",
-  ).catch(() => null);
-
-  if (!text) return;
-
-  parsedConfig = configSchema.parse(parse(text));
-};
+const parsedConfig = configSchema.parse(
+  parse(
+    (() => {
+      try {
+        return readFileSync(process.env.CONFIG_FILE ?? "config.toml", "utf-8");
+      } catch {
+        return "";
+      }
+    })(),
+  ),
+);
 
 export const config = <
   Key extends DotNotation<Config>,
