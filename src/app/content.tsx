@@ -44,7 +44,7 @@ export const LoginContent = ({ appName }: { appName: string }) => {
       }
 
       toast.success("Successfully signed in!");
-      return redirect("/dashboard");
+      return redirect("/servers");
     },
   });
 
