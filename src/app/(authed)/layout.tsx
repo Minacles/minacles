@@ -22,7 +22,7 @@ export default async function AuthenticatedLayout({
     <SidebarProvider>
       <AppSidebar appName={config("app.name")!} />
 
-      <main className="flex-1">
+      <main className="flex-1 flex flex-col">
         <AppHeader />
 
         {children}

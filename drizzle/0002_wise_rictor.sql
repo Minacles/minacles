@@ -1,0 +1,1 @@
+ALTER TABLE `java_instance` ADD `is_system` integer DEFAULT false NOT NULL;

@@ -8,6 +8,20 @@
       "when": 1765041817469,
       "tag": "0000_tough_princess_powerful",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1765117588010,
+      "tag": "0001_dusty_vivisector",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1765118484189,
+      "tag": "0002_wise_rictor",
+      "breakpoints": true
     }
   ]
 }
