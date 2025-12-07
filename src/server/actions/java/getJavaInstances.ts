@@ -2,25 +2,17 @@
 
 import which from "which";
 import { db } from "@/server/db";
-import { $ } from "@/server/utils";
+import { queryJavaInstance } from "./queryJavaInstance";
 
 export const getSystemJava = async () => {
   const systemInstance = await which("java", { nothrow: true });
   if (!systemInstance) return;
 
-  const output = await $(
-    `${systemInstance} -XshowSettings:properties -version`,
-  );
-  const text = await output.text();
-  const version = text
-    .split("\n")
-    .find((line) => line.includes("java.version"))
-    ?.split("=")[1]
-    .trim();
+  const query = await queryJavaInstance(systemInstance);
 
   return {
+    ...query,
     path: systemInstance,
-    version,
   };
 };
 

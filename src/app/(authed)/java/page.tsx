@@ -1,16 +1,29 @@
-import { Plus } from "lucide-react";
+import { Trash } from "lucide-react";
 import { Suspense } from "react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Card,
+  CardAction,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import { getJavaInstances } from "@/server/actions/java/getJavaInstances";
 import { syncSystemJava } from "@/server/actions/java/syncSystemJava";
+import { AddJavaInstance } from "./add-instances/dialog";
+import { InstanceAction } from "./instance-action";
 
 async function JavaInstancesList() {
   await syncSystemJava();
@@ -23,19 +36,21 @@ async function JavaInstancesList() {
           <span className="font-semibold">{instances.length}</span> instance
           recorded
         </h3>
-        <Button>
-          <Plus />
-          Add Instance
-        </Button>
+
+        <AddJavaInstance />
       </header>
 
-      <section>
+      <section className="space-y-2">
         {instances.map((instance) => (
           <Card key={instance.id}>
             <CardHeader>
               <CardTitle className="flex gap-4 items-center">
                 {instance.name}
               </CardTitle>
+
+              {!instance.isSystem && (
+                <InstanceAction instanceId={instance.id} />
+              )}
             </CardHeader>
             <CardContent className="grid grid-cols-3">
               <div>

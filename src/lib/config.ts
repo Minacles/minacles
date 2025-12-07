@@ -1,3 +1,4 @@
+import "server-only";
 import { readFileSync } from "node:fs";
 import { get } from "lodash-es";
 import { parse } from "smol-toml";
