@@ -16,6 +16,21 @@ export const getObjectSchemaDefaults = <Schema extends z.ZodObject>(
   ) as z.infer<Schema>;
 };
 
+export const getQueryParams = (
+  params: Record<string, string | number | boolean | undefined>,
+) => {
+  const entries = Object.entries(params)
+    .filter(([, value]) => value !== undefined)
+    .map(([key, value]) => [key, String(value)]);
+
+  return entries
+    .map(
+      ([key, value]) =>
+        `${encodeURIComponent(key)}=${encodeURIComponent(value)}`,
+    )
+    .join("&");
+};
+
 // Utility types for dot notation
 export type DotNotation<T, Prefix extends string = ""> = T extends object
   ? {

@@ -1,6 +1,8 @@
+import { QueryClientProvider } from "@tanstack/react-query";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
+import { queryClient } from "@/client/query";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { config } from "@/lib/config";
 import { getSession } from "@/server/actions/user/getSession";
@@ -19,14 +21,16 @@ export default async function AuthenticatedLayout({
   }
 
   return (
-    <SidebarProvider>
-      <AppSidebar appName={config("app.name")!} />
+    <QueryClientProvider client={queryClient}>
+      <SidebarProvider>
+        <AppSidebar appName={config("app.name")!} />
 
-      <main className="flex-1 flex flex-col">
-        <AppHeader />
+        <main className="flex-1 flex flex-col">
+          <AppHeader />
 
-        {children}
-      </main>
-    </SidebarProvider>
+          {children}
+        </main>
+      </SidebarProvider>
+    </QueryClientProvider>
   );
 }

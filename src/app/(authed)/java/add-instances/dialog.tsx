@@ -12,6 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AddAdoptiumJavaInstance } from "./adoptium";
 import { AddLocalJavaInstance } from "./local";
 
 export const AddJavaInstance = () => {
@@ -44,7 +45,7 @@ export const AddJavaInstance = () => {
           </TabsList>
 
           <TabsContent value="adoptium">
-            <p>Adoptium installation coming soon!</p>
+            <AddAdoptiumJavaInstance closeDialog={closeDialog} />
           </TabsContent>
 
           <TabsContent value="local">
