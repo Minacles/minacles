@@ -2,10 +2,12 @@
 
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import React, { useMemo } from "react";
+import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Spinner } from "@/components/ui/spinner";
 import { getAdoptumReleases } from "@/server/actions/adoptium/getAdoptiumReleases";
 import { getLtsJavaVersions } from "@/server/actions/adoptium/getLtsJavaVersions";
+import { installAdoptiumRelease } from "@/server/actions/adoptium/installAdoptiumRelease";
 
 export const AddAdoptiumJavaInstance = ({
   closeDialog,
@@ -68,6 +70,28 @@ export const AddAdoptiumJavaInstance = ({
     return result;
   }, [lts.data, releases.data]);
 
+  const handleDownload = (release: string) => {
+    // closeDialog();
+    toast.promise(installAdoptiumRelease(release), {
+      loading: (
+        <>
+          Installing Java <Badge variant="secondary">{release}</Badge>...
+        </>
+      ),
+      success: (
+        <>
+          Java <Badge variant="secondary">{release}</Badge> installed
+          successfully!
+        </>
+      ),
+      error: (
+        <>
+          Failed to install Java <Badge variant="secondary">{release}</Badge>.
+        </>
+      ),
+    });
+  };
+
   return (
     <div className="flex flex-col gap-4">
       {lts.isLoading || releases.isLoading ? (
@@ -80,11 +104,13 @@ export const AddAdoptiumJavaInstance = ({
             // biome-ignore lint/suspicious/noArrayIndexKey: infinite scroll
             <React.Fragment key={i}>
               {page.data.map((release, index) => (
-                <section
+                <button
+                  type="button"
                   key={release}
                   className={`p-4 hover:bg-accent transition-colors cursor-pointer border-b last:border-b-0 ${
                     index % 2 === 0 ? "bg-muted/50" : ""
                   }`}
+                  onClick={() => handleDownload(release.toString())}
                 >
                   <div className="flex items-center gap-2">
                     <span className="font-semibold">
@@ -103,7 +129,7 @@ export const AddAdoptiumJavaInstance = ({
                       <Badge variant="default">LTS</Badge>
                     )}
                   </div>
-                </section>
+                </button>
               ))}
             </React.Fragment>
           ))}

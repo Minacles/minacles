@@ -1,5 +1,6 @@
 import "server-only";
 import { readFileSync } from "node:fs";
+import { resolve as resolvePath } from "node:path";
 import { get } from "lodash-es";
 import { parse } from "smol-toml";
 import { z } from "zod";
@@ -18,9 +19,17 @@ const databaseConfig = z.object({
     .default("file:stores.db"),
 });
 
+const filesSchema = z.object({
+  directory: z
+    .string()
+    .transform((v) => resolvePath(v))
+    .default(process.cwd()),
+});
+
 const configSchema = z.object({
   app: appConfig.default(getObjectSchemaDefaults(appConfig)),
   database: databaseConfig.default(getObjectSchemaDefaults(databaseConfig)),
+  files: filesSchema.default(getObjectSchemaDefaults(filesSchema)),
 });
 
 export type Config = z.infer<typeof configSchema>;
