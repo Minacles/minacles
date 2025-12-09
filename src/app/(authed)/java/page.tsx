@@ -1,24 +1,14 @@
-import { Trash } from "lucide-react";
+import { LandPlot } from "lucide-react";
 import { Suspense } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import { Spinner } from "@/components/ui/spinner";
 import { getJavaInstances } from "@/server/actions/java/getJavaInstances";
 import { syncSystemJava } from "@/server/actions/java/syncSystemJava";
@@ -41,6 +31,23 @@ async function JavaInstancesList() {
       </header>
 
       <section className="space-y-2">
+        {instances.length === 0 && (
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <LandPlot />
+              </EmptyMedia>
+              <EmptyTitle>No Instance</EmptyTitle>
+              <EmptyDescription>
+                Create or add instance manually.
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <AddJavaInstance />
+            </EmptyContent>
+          </Empty>
+        )}
+
         {instances.map((instance) => (
           <Card key={instance.id}>
             <CardHeader>
