@@ -10,7 +10,7 @@ export const AppHeader = () => {
   const activePage = Pages.find((page) => pathname.startsWith(page.url));
 
   return (
-    <header className="p-4 flex items-center gap-4">
+    <header className="p-4 flex items-center gap-4 sticky top-0 bg-white">
       <SidebarTrigger />
       <Separator orientation="vertical" className="h-6!" />
       <h1 className="font-semibold">

@@ -30,7 +30,7 @@ async function JavaInstancesList() {
         <AddJavaInstance />
       </header>
 
-      <section className="space-y-2">
+      <section className="space-y-4">
         {instances.length === 0 && (
           <Empty>
             <EmptyHeader>
@@ -59,7 +59,7 @@ async function JavaInstancesList() {
                 <InstanceAction instanceId={instance.id} />
               )}
             </CardHeader>
-            <CardContent className="grid grid-cols-3">
+            <CardContent className="flex columns-3 gap-16">
               <div>
                 <p className="text-sm font-medium">Version</p>
                 <p className="text-muted-foreground">{instance.version}</p>

@@ -5,9 +5,8 @@ import { Plus } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useDebouncedCallback } from "use-debounce";
-import z, { set } from "zod";
+import z from "zod";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import {
   Field,
   FieldError,

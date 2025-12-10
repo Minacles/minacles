@@ -1,9 +1,12 @@
 "use server";
 
+import { rm } from "node:fs/promises";
+import path from "node:path";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { db } from "@/server/db";
 import { javaInstance } from "@/server/db/schema";
+import { getJdkFolder } from "../app/jdk";
 
 export const deleteJavaInstance = async (instanceId: string) => {
   const record = await db.query.javaInstance.findFirst({
@@ -24,7 +27,10 @@ export const deleteJavaInstance = async (instanceId: string) => {
     .execute());
 
   if (record.isManaged) {
-    // TODO: clean up managed Java instance files
+    await rm(path.join(await getJdkFolder(), record.id), {
+      recursive: true,
+      force: true,
+    });
   }
 
   revalidatePath("/java");

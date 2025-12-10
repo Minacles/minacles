@@ -71,7 +71,7 @@ export const AddAdoptiumJavaInstance = ({
   }, [lts.data, releases.data]);
 
   const handleDownload = (release: string) => {
-    // closeDialog();
+    closeDialog();
     toast.promise(installAdoptiumRelease(release), {
       loading: (
         <>
@@ -93,7 +93,7 @@ export const AddAdoptiumJavaInstance = ({
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-8">
       {lts.isLoading || releases.isLoading ? (
         <div className="flex justify-center p-8">
           <Spinner />
@@ -116,7 +116,10 @@ export const AddAdoptiumJavaInstance = ({
                     <span className="font-semibold">
                       Java{" "}
                       {release.startsWith("jdk8")
-                        ? release.split("-")[0]?.replace("jdk", "")
+                        ? release
+                            .split("-")[0]
+                            ?.split("u")[0]
+                            ?.replace("jdk", "")
                         : release.split("-")[1]?.split("+")[0]}
                     </span>
                     <span className="text-sm text-muted-foreground">
@@ -133,6 +136,7 @@ export const AddAdoptiumJavaInstance = ({
               ))}
             </React.Fragment>
           ))}
+
           {releases.hasNextPage && (
             <div
               ref={(node) => {

@@ -4,10 +4,17 @@ import { type FileHandle, mkdir, open, rm } from "node:fs/promises";
 import path from "node:path";
 import { config } from "@/lib/config";
 
-export const createTemporaryFolder = async () => {
+export const getTemporaryFolder = async () => {
   const filesPath = config("files.directory")!;
   const tempFolder = path.join(filesPath, ".temp");
 
+  return tempFolder;
+};
+
+export const createTemporaryFolder = async () => {
+  const tempFolder = await getTemporaryFolder();
+
+  await rm(tempFolder, { recursive: true, force: true });
   await mkdir(tempFolder, { recursive: true });
 
   return tempFolder;
@@ -22,7 +29,8 @@ export const getTemporaryFile = async (name: string) => {
 
 export const openTemporaryFile = async (name: string) => {
   const filePath = await getTemporaryFile(name);
-  const handle = await open(filePath, "w+");
+  const handle = (await open(filePath, "w+")) as FileHandle & { path: string };
+  handle.path = filePath;
 
   return handle;
 };
