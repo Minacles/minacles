@@ -131,3 +131,24 @@ export const javaInstance = sqliteTable(
   },
   (table) => [index("java_instance_name_idx").on(table.name)],
 );
+
+export const mcServer = sqliteTable(
+  "mc_server",
+  {
+    id: text("id").primaryKey(),
+    name: text("name").notNull(),
+    javaInstanceId: text("java_instance_id")
+      .notNull()
+      .references(() => javaInstance.id),
+    version: text("version").notNull(),
+    type: text("type").notNull(), // e.g., vanilla, fabric, forge, spigot, paper
+    createdAt: integer("created_at", { mode: "timestamp_ms" })
+      .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
+      .notNull(),
+    updatedAt: integer("updated_at", { mode: "timestamp_ms" })
+      .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+  },
+  (table) => [index("mc_server_name_idx").on(table.name)],
+);

@@ -22,6 +22,13 @@
       "when": 1765118484189,
       "tag": "0002_wise_rictor",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1765389528173,
+      "tag": "0003_cuddly_avengers",
+      "breakpoints": true
     }
   ]
 }
